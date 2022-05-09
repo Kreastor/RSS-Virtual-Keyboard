@@ -20,11 +20,11 @@ KeyboardContainer.insertAdjacentHTML("beforeend", '<div id="row5"></div>');
 
 
 row1.insertAdjacentHTML("afterbegin", '<div class="extreme-button row1" id="~"><span class="shift-letter">~</span>`</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="!"><span class="shift-letter">!</span>1</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="@"><span class="shift-letter">@</span>2</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="#"><span class="shift-letter">#</span>3</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="$"><span class="shift-letter">$</span>4</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="%"><span class="shift-letter">%</span>5</div>');
+row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button1"><span class="shift-letter">!</span>1</div>');
+row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button2"><span class="shift-letter">@</span>2</div>');
+row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button3"><span class="shift-letter">#</span>3</div>');
+row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button4"><span class="shift-letter">$</span>4</div>');
+row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button5"><span class="shift-letter">%</span>5</div>');
 row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="^"><span class="shift-letter">^</span>6</div>');
 row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="&"><span class="shift-letter">&</span>7</div>');
 row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="*"><span class="shift-letter">*</span>8</div>');
