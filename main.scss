@@ -58,23 +58,29 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px solid rgba(28, 35, 46, 1);
     border-radius: 10px;
     background-color: rgba(28, 35, 46, 1);
     width: 100px;
     color: #fff;
+    &:active {
+        background-color:rgba(85, 113, 238, 1);
+    }
+    
 }
+
 
 .main-button {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px solid rgba(58, 66, 78, 1);
     border-radius: 10px;
     background-color: rgba(58, 66, 78, 1);
     width: 90px;
     color: #fff;
+    &:active {
+        background-color:rgba(85, 113, 238, 1);
+    }
 }
 
 .shift-letter {
@@ -108,7 +114,7 @@ body {
     width: 210px;
 }
 
-#shift {
+#shiftLeft {
     width: 210px;
 }
 
