@@ -12,117 +12,128 @@ body {
     font-size: 40px;
 }
 
-#KeyboardContainer {
-    width: 1600px;
+.keyboard {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    padding: 5px 0;
     background-color: grey;
     border: 3px solid blueviolet;
-    border-radius: 10px;
-    padding: 5px;
-}
-
-#row1 {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-}
-#row2 {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-}
-#row3 {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-
-}
-#row4 {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-
-}
-#row5 {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-
-}
-
-.extreme-button {
-    position: relative;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    transition: bottom 0.4s;
     display: flex;
     justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    background-color: rgba(28, 35, 46, 1);
-    width: 100px;
-    color: #fff;
-    &:active {
-        background-color:rgba(85, 113, 238, 1);
-    }
-    
 }
 
+.keyboard--hidden {
+    bottom: -100%;
+}
 
-.main-button {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.keyboard__keys {
+    width: 1500px;
+}
+
+.keyboard__key {
+    height: 45px;
+    width: 90px;
+    height: 80px;  
+    margin: 3px;
     border-radius: 10px;
+    border: 1px solid #d3d3d3;
     background-color: rgba(58, 66, 78, 1);
-    width: 90px;
     color: #fff;
-    &:active {
-        background-color:rgba(85, 113, 238, 1);
-    }
+    font-size: 1.05rem;
+    outline: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+        &:active {
+            background-color:rgba(85, 113, 238, 1);
+        }
 }
 
-.shift-letter {
-    position: absolute;
-    color: #fff;
-    left: 10px;
-    top: 5px;
+.ё {
+    width: 110px !important;
+    background-color: rgba(28, 35, 46, 1);
 }
 
-.row1 {
-    width: 90px;
+.backspace {
+    width: 210px !important;
+    background-color: rgba(28, 35, 46, 1);
 }
 
-#backspace {
-    width: 210px;
-}
-
-#tab {
+.tab {
     width: 120px;
+    background-color: rgba(28, 35, 46, 1);
 }
 
-.row2 {
-    width: 90px;
+.del {
+    width: 102px;
+    background-color: rgba(28, 35, 46, 1);
 }
 
-#caps-lock {
-    width: 210px;
+.caps-lock {
+    width: 190px !important;
+    background-color: rgba(28, 35, 46, 1);
 }
 
-#enter {
-    width: 210px;
+.shift {
+    width: 229px !important;
+    background-color: rgba(28, 35, 46, 1);
 }
 
-#shiftLeft {
-    width: 210px;
+.r-shift {
+    width: 90px !important;
+    background-color: rgba(28, 35, 46, 1);
+}
+
+.enter {
+    width: 225px !important;
+    background-color: rgba(28, 35, 46, 1);
 }
 
 .ctrl {
-    width: 150px;
+    width: 150px !important;
+    background-color: rgba(28, 35, 46, 1);
 }
 
-#space {
-    width: 580px;
+.alt, .win {
+    background-color: rgba(28, 35, 46, 1);
 }
 
+.space {
+    width: 590px !important;
+    background-color: rgba(28, 35, 46, 1);
+}
+
+.bc-blue {
+    background-color:rgba(85, 113, 238, 1);
+}
+
+.keyboard__key--activatable::after {
+    content: '';
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+}
+
+.keyboard__key--active::after {
+    background: #08ff00;
+}
+
+.keyboard__key--dark {
+    background: rgba(0, 0, 0, 0.25);
+    width: 1480px;
+}

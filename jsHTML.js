@@ -1,91 +1,270 @@
+alert("ссылка на пул реквест https://github.com/Kreastor/RSS-Virtual-Keyboard/pulls")
+
 const Form = document.createElement('form'); 
 document.body.append(Form);
 Form.id = "teaxarea-form";
 Form.action = "#";
 Form.method = "post";
 
-Form.insertAdjacentHTML("afterbegin", '<textarea id="textarea"></textarea>');
+Form.insertAdjacentHTML("afterbegin", '<textarea id="textarea" class="use-keyboard-input"></textarea>');
+
+const Keyboard = {
+    elements: {
+        main: null,
+        keysContainer: null,
+        keys: []
+    },
+
+    eventHandlers: {
+        oninput: null,
+        onclose: null
+    },
+
+    properties: {
+        value: "",
+        capsLock: false
+    },
+
+    init() {
+        // Create main elements
+        this.elements.main = document.createElement("div");
+        this.elements.keysContainer = document.createElement("div");
+
+        // Setup main elements
+        this.elements.main.classList.add("keyboard", "keyboard--hidden");
+        this.elements.keysContainer.classList.add("keyboard__keys");
+        this.elements.keysContainer.appendChild(this._createKeys());
+
+        this.elements.keys = this.elements.keysContainer.querySelectorAll(".keyboard__key");
+
+        // Add to DOM
+        this.elements.main.appendChild(this.elements.keysContainer);
+        document.body.appendChild(this.elements.main);
+
+        // Automatically use keyboard for elements with .use-keyboard-input
+        document.querySelectorAll(".use-keyboard-input").forEach(element => {
+            element.addEventListener("focus", () => {
+                this.open(element.value, currentValue => {
+                    element.value = currentValue;
+                });
+            });
+        });
+    },
+
+    _createKeys() {
+        const fragment = document.createDocumentFragment();
+        const keyLayout = [
+            "`","1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "backspace",
+            "tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\", "del",
+            "caps", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "\'", "enter",
+            "shift", "\\", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "↑", "R-Shift",
+            "ctrl", "win", "alt", "space", "alt", "ctrl", "←", "↓", "→", "done"
+        ];
+
+        // Creates HTML for an icon
+        const createIconHTML = (icon_name) => {
+            return `<i class="material-icons">${icon_name}</i>`;
+        };
+
+        keyLayout.forEach(key => {
+            const keyElement = document.createElement("button");
+            const insertLineBreak = ["backspace", "del", "enter", "R-Shift", "→"].indexOf(key) !== -1;
+
+            // Add attributes/classes
+            keyElement.setAttribute("type", "button");
+            keyElement.classList.add("keyboard__key");
+
+            switch (key) {
+
+                case "`":
+                    keyElement.classList.add("ё");
+                    keyElement.innerHTML = "`";
+
+                    keyElement.addEventListener("click", () => {
+                        this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+                        this._triggerEvent("oninput");
+                    });
+
+                    break;
+
+                case "backspace":
+                    keyElement.classList.add("backspace");
+                    keyElement.innerHTML = createIconHTML("backspace");
+
+                    keyElement.addEventListener("click", () => {
+                        this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+                        this._triggerEvent("oninput");
+                    });
+
+                    break;
+                
+                case "tab":
+                    keyElement.classList.add("tab");
+                    keyElement.innerHTML = "Tab";
+
+                    keyElement.addEventListener("click", () => {
+                        this.properties.value += "  ";
+                        this._triggerEvent("oninput");
+                    });
+
+                    break;  
+
+                case "del":
+                    keyElement.classList.add("del");
+                    keyElement.innerHTML = "Del";
+
+                    keyElement.addEventListener("click", () => {
+                        this.properties.value = this.properties.value.substring(1, this.properties.value.length);
+                        this._triggerEvent("oninput");
+                    });
+
+                    break; 
+
+                case "caps":
+                    keyElement.classList.add("keyboard__key--activatable", "caps-lock");
+                    keyElement.innerHTML = "Caps Lock";
+
+                    keyElement.addEventListener("click", () => {
+                        this._toggleCapsLock();
+                        keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
+                    });
+
+                    break;
+
+                case "enter":
+                    keyElement.classList.add("enter");
+                    keyElement.innerHTML = "Enter";
+
+                    keyElement.addEventListener("click", () => {
+                        this.properties.value += "\n";
+                        this._triggerEvent("oninput");
+                    });
+
+                    break;
+
+                case "shift":
+                keyElement.classList.add("shift");
+                keyElement.innerHTML = "Shift";
+
+                keyElement.addEventListener("click", () => {
+                    this.properties.value += "\n";
+                    this._triggerEvent("oninput");
+                });
+
+                break;
+
+                case "R-Shift":
+                    keyElement.classList.add("r-shift");
+                    keyElement.innerHTML = "Shift";
+
+                keyElement.addEventListener("click", () => {
+                    this.properties.value += "\n";
+                    this._triggerEvent("oninput");
+                });
+    
+                break;
+
+                case "ctrl":
+                    keyElement.classList.add("ctrl");
+                    keyElement.innerHTML = "Ctrl"; 
+
+                break;
 
 
-const KeyboardContainer = document.createElement('div');
-KeyboardContainer.id = "KeyboardContainer";
+                case "win":
+                    keyElement.classList.add("win");
+                    keyElement.innerHTML = "Win"; 
 
-document.body.append(KeyboardContainer);
+                break;
 
-KeyboardContainer.insertAdjacentHTML("afterbegin", '<div id="row1"></div>');
-KeyboardContainer.insertAdjacentHTML("beforeend", '<div id="row2"></div>');
-KeyboardContainer.insertAdjacentHTML("beforeend", '<div id="row3"></div>');
-KeyboardContainer.insertAdjacentHTML("beforeend", '<div id="row4"></div>');
-KeyboardContainer.insertAdjacentHTML("beforeend", '<div id="row5"></div>');
+                case "alt":
+                    keyElement.classList.add("alt");
+                    keyElement.innerHTML = "Alt"; 
 
+                    break;
 
-row1.insertAdjacentHTML("afterbegin", '<div class="extreme-button row1" id="~"><span class="shift-letter">~</span>`</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button1"><span class="shift-letter">!</span>1</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button2"><span class="shift-letter">@</span>2</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button3"><span class="shift-letter">#</span>3</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button4"><span class="shift-letter">$</span>4</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="button5"><span class="shift-letter">%</span>5</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="^"><span class="shift-letter">^</span>6</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="&"><span class="shift-letter">&</span>7</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="*"><span class="shift-letter">*</span>8</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="("><span class="shift-letter">(</span>9</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id=")"><span class="shift-letter">)</span>0</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="_"><span class="shift-letter">_</span>-</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="main-button row1" id="+"><span class="shift-letter">+</span>=</div>');
-row1.insertAdjacentHTML("beforeend", '<div class="extreme-button" id="backspace"><span class="shift-letter"></span>Backspace</div>');
+                case "space":
+                    keyElement.classList.add("space");
+                    keyElement.innerHTML = createIconHTML("space_bar");
 
+                    keyElement.addEventListener("click", () => {
+                        this.properties.value += " ";
+                        this._triggerEvent("oninput");
+                    });
 
-row2.insertAdjacentHTML("afterbegin", '<div class="extreme-button" id="tab"><span class="shift-letter"></span>Tab</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="Q"><span class="shift-letter"></span>Q</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="W"><span class="shift-letter"></span>W</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="E"><span class="shift-letter"></span>E</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="R"><span class="shift-letter"></span>R</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="T"><span class="shift-letter"></span>T</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="Y"><span class="shift-letter"></span>Y</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="U"><span class="shift-letter"></span>U</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="I"><span class="shift-letter"></span>I</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="O"><span class="shift-letter"></span>O</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="P"><span class="shift-letter"></span>P</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="["><span class="shift-letter"></span>[</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="]"><span class="shift-letter"></span>]</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="main-button row2" id="\\"><span class="shift-letter">|</span>\\</div>');
-row2.insertAdjacentHTML("beforeend", '<div class="extreme-button" id="DEL"><span class="shift-letter"></span>DEL</div>');
+                    break;
 
-row3.insertAdjacentHTML("afterbegin", '<div class="extreme-button" id="caps-lock"><span class="shift-letter"></span>Caps Lock</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="A"><span class="shift-letter"></span>A</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="S"><span class="shift-letter"></span>S</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="D"><span class="shift-letter"></span>D</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="F"><span class="shift-letter"></span>F</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="G"><span class="shift-letter"></span>G</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="H"><span class="shift-letter"></span>H</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="J"><span class="shift-letter"></span>J</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="K"><span class="shift-letter"></span>K</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="L"><span class="shift-letter"></span>L</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id=";"><span class="shift-letter"></span>;</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="main-button" id="\'"><span class="shift-letter"></span>\'</div>');
-row3.insertAdjacentHTML("beforeend", '<div class="extreme-button" id="enter"><span class="shift-letter"></span>Enter</div>');
+                case "done":
+                    keyElement.classList.add("keyboard__key--dark");
+                    keyElement.innerHTML = createIconHTML("check_circle");
 
-row4.insertAdjacentHTML("afterbegin", '<div class="extreme-button" id="shiftLeft"><span class="shift-letter"></span>Shift</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="\\"><span class="shift-letter"></span>\\</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="Z"><span class="shift-letter"></span>Z</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="X"><span class="shift-letter"></span>X</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="C"><span class="shift-letter"></span>C</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="V"><span class="shift-letter"></span>V</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="B"><span class="shift-letter"></span>B</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="N"><span class="shift-letter"></span>N</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="M"><span class="shift-letter"></span>M</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id=","><span class="shift-letter"></span>,</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="."><span class="shift-letter"></span>.</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="main-button" id="/"><span class="shift-letter"></span>/</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="extreme-button" id="↑"><span class="shift-letter"></span>↑</div>');
-row4.insertAdjacentHTML("beforeend", '<div class="extreme-button" id="shiftRight"><span class="shift-letter"></span>Shift</div>');
+                    keyElement.addEventListener("click", () => {
+                        this.close();
+                        this._triggerEvent("onclose");
+                    });
 
-row5.insertAdjacentHTML("afterbegin", '<div class="extreme-button ctrl"><span class="shift-letter"></span>Ctrl</div>');
-row5.insertAdjacentHTML("beforeend", '<div class="extreme-button"><span class="shift-letter"></span>Win</div>');
-row5.insertAdjacentHTML("beforeend", '<div class="extreme-button"><span class="shift-letter"></span>Alt</div>');
-row5.insertAdjacentHTML("beforeend", '<div class="main-button" id="space"><span class="shift-letter"></span></div>');
-row5.insertAdjacentHTML("beforeend", '<div class="extreme-button"><span class="shift-letter"></span>Alt</div>');
-row5.insertAdjacentHTML("beforeend", '<div class="extreme-button ctrl"><span class="shift-letter"></span>Ctrl</div>');
-row5.insertAdjacentHTML("beforeend", '<div class="extreme-button"><span class="shift-letter"></span>←</div>');
-row5.insertAdjacentHTML("beforeend", '<div class="extreme-button"><span class="shift-letter"></span>↓</div>');
-row5.insertAdjacentHTML("beforeend", '<div class="extreme-button"><span class="shift-letter"></span>→</div>');
+                    break;
+
+                default:
+                    keyElement.textContent = key.toUpperCase();
+                    keyElement.addEventListener("click", () => {
+                        this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+                        this._triggerEvent("oninput");
+                    });
+
+                    break;
+            }
+
+            fragment.appendChild(keyElement);
+
+            if (insertLineBreak) {
+                fragment.appendChild(document.createElement("br"));
+            }
+        });
+
+        return fragment;
+    },
+
+    _triggerEvent(handlerName) {
+        if (typeof this.eventHandlers[handlerName] == "function") {
+            this.eventHandlers[handlerName](this.properties.value);
+        }
+    },
+
+    _toggleCapsLock() {
+        this.properties.capsLock = !this.properties.capsLock;
+
+        for (const key of this.elements.keys) {
+            if (key.childElementCount === 0) {
+                key.textContent = this.properties.capsLock ? key.textContent.toUpperCase() : key.textContent.toLowerCase();
+            }
+        }
+    },
+
+    open(initialValue, oninput, onclose) {
+        this.properties.value = initialValue || "";
+        this.eventHandlers.oninput = oninput;
+        this.eventHandlers.onclose = onclose;
+        this.elements.main.classList.remove("keyboard--hidden");
+    },
+
+    close() {
+        this.properties.value = "";
+        this.eventHandlers.oninput = oninput;
+        this.eventHandlers.onclose = onclose;
+        this.elements.main.classList.add("keyboard--hidden");
+    }
+    
+};
+
+window.addEventListener("DOMContentLoaded", function () {
+    Keyboard.init();
+});
+
+const elements = document.getElementsByClassName('keyboard__key');
+for(let i=0; i < elements.length; i++) {
+    elements[i].addEventListener("keydown", function (e) {
+        elements.style.background ="rgba(85, 113, 238, 1)";
+    });
+};
+

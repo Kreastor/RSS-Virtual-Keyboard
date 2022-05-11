@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -22,156 +23,144 @@ body {
   font-size: 40px;
 }
 
-#KeyboardContainer {
-  width: 1600px;
+.keyboard {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   height: 500px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  padding: 5px 0;
   background-color: grey;
   border: 3px solid blueviolet;
-  border-radius: 10px;
-  padding: 5px;
-}
-
-#row1 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  height: 80px;
-}
-
-#row2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  height: 80px;
-}
-
-#row3 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  height: 80px;
-}
-
-#row4 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  height: 80px;
-}
-
-#row5 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  height: 80px;
-}
-
-.extreme-button {
-  position: relative;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-transition: bottom 0.4s;
+  transition: bottom 0.4s;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  border-radius: 10px;
-  background-color: #1c232e;
-  width: 100px;
-  color: #fff;
 }
 
-.extreme-button:active {
-  background-color: #5571ee;
+.keyboard--hidden {
+  bottom: -100%;
 }
 
-.main-button {
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+.keyboard__keys {
+  width: 1500px;
+}
+
+.keyboard__key {
+  height: 45px;
+  width: 90px;
+  height: 80px;
+  margin: 3px;
   border-radius: 10px;
+  border: 1px solid #d3d3d3;
   background-color: #3a424e;
-  width: 90px;
   color: #fff;
+  font-size: 1.05rem;
+  outline: none;
+  cursor: pointer;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  vertical-align: top;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
-.main-button:active {
+.keyboard__key:active {
   background-color: #5571ee;
 }
 
-.shift-letter {
-  position: absolute;
-  color: #fff;
-  left: 10px;
-  top: 5px;
+.ё {
+  width: 110px !important;
+  background-color: #1c232e;
 }
 
-.row1 {
-  width: 90px;
+.backspace {
+  width: 210px !important;
+  background-color: #1c232e;
 }
 
-#backspace {
-  width: 210px;
-}
-
-#tab {
+.tab {
   width: 120px;
+  background-color: #1c232e;
 }
 
-.row2 {
-  width: 90px;
+.del {
+  width: 102px;
+  background-color: #1c232e;
 }
 
-#caps-lock {
-  width: 210px;
+.caps-lock {
+  width: 190px !important;
+  background-color: #1c232e;
 }
 
-#enter {
-  width: 210px;
+.shift {
+  width: 229px !important;
+  background-color: #1c232e;
 }
 
-#shiftLeft {
-  width: 210px;
+.r-shift {
+  width: 90px !important;
+  background-color: #1c232e;
+}
+
+.enter {
+  width: 225px !important;
+  background-color: #1c232e;
 }
 
 .ctrl {
-  width: 150px;
+  width: 150px !important;
+  background-color: #1c232e;
 }
 
-#space {
-  width: 580px;
+.alt, .win {
+  background-color: #1c232e;
+}
+
+.space {
+  width: 590px !important;
+  background-color: #1c232e;
+}
+
+.bc-blue {
+  background-color: #5571ee;
+}
+
+.keyboard__key--activatable::after {
+  content: '';
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+}
+
+.keyboard__key--active::after {
+  background: #08ff00;
+}
+
+.keyboard__key--dark {
+  background: rgba(0, 0, 0, 0.25);
+  width: 1480px;
 }
