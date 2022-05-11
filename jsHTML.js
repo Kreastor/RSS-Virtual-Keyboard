@@ -1,4 +1,4 @@
-alert("ссылка на пул реквест https://github.com/Kreastor/RSS-Virtual-Keyboard/pull/1")
+alert("ссылка на пул реквест https://github.com/Kreastor/RSS-Virtual-Keyboard/pull/1");
 
 const Form = document.createElement('form'); 
 document.body.append(Form);
